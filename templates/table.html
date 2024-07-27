@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recall Data Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recall Data Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>City</th>
+                <th>Address 1</th>
+                <th>Address 2</th>
+                <th>Product Description</th>
+                <th>Product Quantity</th>
+                <th>Reason for Recall</th>
+                <th>Recall Number</th>
+                <th>Report Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.country }}</td>
+                <td>{{ item.city }}</td>
+                <td>{{ item.address_1 }}</td>
+                <td>{{ item.address_2 }}</td>
+                <td>{{ item.product_description }}</td>
+                <td>{{ item.product_quantity }}</td>
+                <td>{{ item.reason_for_recall }}</td>
+                <td>{{ item.recall_number }}</td>
+                <td>{{ item.report_date }}</td>
+                <td>{{ item.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
