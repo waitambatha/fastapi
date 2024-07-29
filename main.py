@@ -1,20 +1,20 @@
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemLoader
-import json
+import httpx, json
+
 from typing import List
 
 app = FastAPI()
 
 # Load JSON data
-def load_data(file_path: str) -> List[dict]:
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-        return data.get("results", [])
 
+response = httpx.get(url="https://api.fda.gov/food/enforcement.json?limit=10")
+data = json.loads(response.content).get('results')
 # Load data into memory
-data = load_data('data.json')
+
 
 # Configure Jinja2 template directory
 template_env = Environment(loader=FileSystemLoader('templates'))
