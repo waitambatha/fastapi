@@ -1,125 +1,94 @@
-Install Required Packages: Ensure you have FastAPI, Uvicorn, and Jinja2 installed. Jinja2 is a templating engine for Python.
+# FDA Food Enforcement Search
 
-bash
-Copy code
-pip install fastapi uvicorn jinja2
-Prepare Your JSON Data: For simplicity, place your JSON data in a file called data.json.
+This project is a FastAPI-based web application that allows users to search FDA food enforcement reports. Users can search for reports based on various fields and view the results in a table format.
 
-Set Up FastAPI with Jinja2 Templates:
+## Features
 
-Set Up FastAPI with Jinja2 Templates:
+- Displays the latest FDA food enforcement reports.
+- Allows users to search for reports by specific fields and terms.
+- Displays search results in a table format.
+- Uses an FDA API key for accessing the data.
 
-Here’s how you can set up your FastAPI application to serve an HTML page with the data in a table.
+## Installation
 
-python
-Copy code
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from jinja2 import Environment, FileSystemLoader
-import json
-from typing import List
+1. **Clone the repository:**
 
-app = FastAPI()
+    ```sh
+    git clone https://github.com/yourusername/fda-food-enforcement-search.git
+    cd fda-food-enforcement-search
+    ```
 
-# Load JSON data
-def load_data(file_path: str) -> List[dict]:
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-        return data.get("results", [])
+2. **Create and activate a virtual environment:**
 
-# Load data into memory
-data = load_data('data.json')
+    ```sh
+    python -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
 
-# Configure Jinja2 template directory
-template_env = Environment(loader=FileSystemLoader('templates'))
+3. **Install the required packages:**
 
-@app.get("/", response_class=HTMLResponse)
-async def get_table(request: Request):
-    template = template_env.get_template('table.html')
-    return template.render(data=data)
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-# Serve static files if needed
-app.mount("/static", StaticFiles(directory="static"), name="static")
-Create the Jinja2 Template:
+4. **Run the application:**
 
-Create a folder named templates in your project directory, and inside it, create a file named table.html. This file will contain the HTML structure to display your table.
+    ```sh
+    uvicorn main:app --reload
+    ```
 
-html
-Copy code
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recall Data Table</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-    <h1>Recall Data Table</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Country</th>
-                <th>City</th>
-                <th>Address 1</th>
-                <th>Address 2</th>
-                <th>Product Description</th>
-                <th>Product Quantity</th>
-                <th>Reason for Recall</th>
-                <th>Recall Number</th>
-                <th>Report Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
-            <tr>
-                <td>{{ item.country }}</td>
-                <td>{{ item.city }}</td>
-                <td>{{ item.address_1 }}</td>
-                <td>{{ item.address_2 }}</td>
-                <td>{{ item.product_description }}</td>
-                <td>{{ item.product_quantity }}</td>
-                <td>{{ item.reason_for_recall }}</td>
-                <td>{{ item.recall_number }}</td>
-                <td>{{ item.report_date }}</td>
-                <td>{{ item.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
-Run Your FastAPI Application:
+5. **Access the application:**
 
-Use Uvicorn to run your FastAPI app.
+    Open your browser and navigate to `http://localhost:8000`.
 
-bash
-Copy code
-uvicorn your_script_name:app --reload
-Replace your_script_name with the name of your Python file (excluding the .py extension).
+## Usage
 
-View the Table:
+### Home Page
 
-Open your browser and navigate to http://127.0.0.1:8000/. You should see a table rendered with the data from your JSON file.
+- The home page displays the latest FDA food enforcement reports.
+- A search form is available at the top of the page.
 
-Summary
-Load the JSON data from a file.
-Set up FastAPI with a route to serve the HTML page.
-Create a Jinja2 template to render the table.
-Run the FastAPI server and view the results in your browser.
-This setup will dynamically load and display the recall data in a tabular format on a web page served by FastAPI.
+### Search
+
+- Users can search for reports by selecting a field and entering a search term.
+- The search results will be displayed in a table format.
+
+### Search URL
+
+- Users can also perform searches directly from the URL.
+- Example: `http://localhost:8000/search?field=report_date&term=2020`
+
+## Project Structure
+
+- `main.py`: Main FastAPI application file.
+- `templates/`: Directory containing HTML templates.
+  - `table.html`: Template for the home page.
+  - `search_results.html`: Template for displaying search results.
+- `requirements.txt`: List of required Python packages.
+
+## API Key
+
+- The application uses an FDA API key for accessing the data.
+- The API key is included in the requests to the FDA API.
+
+## Dependencies
+
+- `fastapi`: FastAPI framework.
+- `httpx`: HTTP client for making requests.
+- `jinja2`: Templating engine.
+- `uvicorn`: ASGI server for running the application.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgements
+
+- [FDA API](https://open.fda.gov/) for providing the data.
+- [FastAPI](https://fastapi.tiangolo.com/) for the web framework.
+- [Jinja2](https://jinja.palletsprojects.com/) for the templating engine.
+
+## Contributing
+
+If you have any suggestions or improvements, feel free to open an issue or create a pull request.
+
